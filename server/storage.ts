@@ -1,37 +1,25 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
 
-// modify the interface with any CRUD methods
-// you might need
+import { type Attempt, type InsertAttempt } from "@shared/schema";
 
+// Minimal storage interface since we are client-side focused
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  logAttempt(attempt: InsertAttempt): Promise<Attempt>;
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private attempts: Map<number, Attempt>;
+  private currentId: number;
 
   constructor() {
-    this.users = new Map();
+    this.attempts = new Map();
+    this.currentId = 1;
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async logAttempt(insertAttempt: InsertAttempt): Promise<Attempt> {
+    const id = this.currentId++;
+    const attempt: Attempt = { ...insertAttempt, id, success: insertAttempt.success ?? true };
+    this.attempts.set(id, attempt);
+    return attempt;
   }
 }
 

@@ -1,18 +1,16 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar } from "drizzle-orm/pg-core";
+
+import { pgTable, text, serial, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+// We don't really need a database for this client-side app, 
+// but we'll define a simple schema to keep the build system happy.
+export const attempts = pgTable("attempts", {
+  id: serial("id").primaryKey(),
+  success: boolean("success").default(true),
+  timestamp: text("timestamp").notNull(),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
-});
-
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
+export const insertAttemptSchema = createInsertSchema(attempts);
+export type InsertAttempt = z.infer<typeof insertAttemptSchema>;
+export type Attempt = typeof attempts.$inferSelect;
