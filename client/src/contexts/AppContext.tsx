@@ -3,18 +3,26 @@ import { createContext, useContext, useState, ReactNode } from "react";
 interface AppContextType {
   name: string;
   setName: (name: string) => void;
-  message: string;
-  setMessage: (message: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
+  // Initialize from localStorage or use default
+  const [name, setNameState] = useState(() => {
+    const saved = localStorage.getItem("app_name");
+    return saved || "Shagun";
+  });
+  
+
+  // Wrapper functions that also save to localStorage
+  const setName = (newName: string) => {
+    setNameState(newName);
+    localStorage.setItem("app_name", newName);
+  };
 
   return (
-    <AppContext.Provider value={{ name, setName, message, setMessage }}>
+    <AppContext.Provider value={{ name, setName }}>
       {children}
     </AppContext.Provider>
   );
