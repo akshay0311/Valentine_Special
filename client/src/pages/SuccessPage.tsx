@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { Heart, Sparkles, Music } from "lucide-react";
@@ -6,7 +6,32 @@ import { Link } from "wouter";
 import { FloatingHeartsBackground } from "@/components/FloatingHeartsBackground";
 
 export default function SuccessPage() {
+  const audioRef = useRef<HTMLAudioElement>(null);
+
   useEffect(() => {
+    // Play romantic background music with user interaction fallback
+    const playAudio = () => {
+      if (audioRef.current) {
+        audioRef.current.volume = 0.3;
+        audioRef.current.play().catch(err => {
+          console.log("Audio autoplay prevented, waiting for user interaction:", err);
+        });
+      }
+    };
+
+    // Try to play immediately
+    playAudio();
+
+    // Also try on any user interaction
+    const handleInteraction = () => {
+      playAudio();
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
+    };
+
+    document.addEventListener('click', handleInteraction);
+    document.addEventListener('touchstart', handleInteraction);
+
     // Massive celebration on mount
     const end = Date.now() + 15 * 1000;
 
@@ -32,11 +57,29 @@ export default function SuccessPage() {
         requestAnimationFrame(frame);
       }
     }());
+
+    // Cleanup: pause music when component unmounts
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      document.removeEventListener('click', handleInteraction);
+      document.removeEventListener('touchstart', handleInteraction);
+    };
   }, []);
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 bg-gradient-to-br from-pink-100 via-red-50 to-white overflow-hidden relative">
       <FloatingHeartsBackground />
+      
+      {/* Background Music */}
+      <audio 
+        ref={audioRef}
+        loop
+        preload="auto"
+      >
+        <source src="/romantic-music.mp3" type="audio/mpeg" />
+      </audio>
 
       <motion.div 
         initial={{ scale: 0.8, opacity: 0 }}
