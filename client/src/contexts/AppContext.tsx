@@ -11,7 +11,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Initialize from localStorage or use default
   const [name, setNameState] = useState(() => {
     const saved = localStorage.getItem("app_name");
-    return saved || "Shagun";
+    return saved || "";
   });
   
 

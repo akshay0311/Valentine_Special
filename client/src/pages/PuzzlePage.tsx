@@ -32,11 +32,6 @@ export default function PuzzlePage() {
     setIsExploding(true);
     setHasWonGame(true);
     
-    // Set name in context (no URL params needed)
-    if (localName) {
-      setName(localName);
-    }
-    
     // Short delay for explosion animation before navigating
     setTimeout(() => {
       setLocation("/proposal");
