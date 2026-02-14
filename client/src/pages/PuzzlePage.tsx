@@ -4,13 +4,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart } from "lucide-react";
 import { useProposalGuard } from "@/hooks/use-proposal";
 import { FloatingHeartsBackground } from "@/components/FloatingHeartsBackground";
+import { useAppContext } from "@/contexts/AppContext";
 
 export default function PuzzlePage() {
   const [, setLocation] = useLocation();
   const { setHasWonGame } = useProposalGuard();
+  const { setName } = useAppContext();
   const [position, setPosition] = useState({ x: 50, y: 50 }); // Percentage
   const containerRef = useRef<HTMLDivElement>(null);
   const [isExploding, setIsExploding] = useState(false);
+
+  const [location] = useLocation();
+  const [localName, setLocalName] = useState("");
 
   useEffect(() => {
     // Move the heart every few seconds or faster
@@ -27,11 +32,28 @@ export default function PuzzlePage() {
     setIsExploding(true);
     setHasWonGame(true);
     
+    // Set name in context (no URL params needed)
+    if (localName) {
+      setName(localName);
+    }
+    
     // Short delay for explosion animation before navigating
     setTimeout(() => {
       setLocation("/proposal");
     }, 800);
   };
+
+  useEffect(() => {
+    // Parse query parameters from the URL
+    const searchParams = new URLSearchParams(window.location.search);
+    const nameParam = searchParams.get("willYouBeMyValentine?");
+
+    if (nameParam) {
+      setLocalName(nameParam);
+      setName(nameParam); // Also set in context
+    }
+  }, [location, setName]);
+
 
   return (
     <div 

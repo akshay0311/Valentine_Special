@@ -6,6 +6,7 @@ import NotFound from "@/pages/not-found";
 import PuzzlePage from "@/pages/PuzzlePage";
 import ProposalPage from "@/pages/ProposalPage";
 import SuccessPage from "@/pages/SuccessPage";
+import { AppProvider } from "@/contexts/AppContext";
 
 function Router() {
   return (
@@ -21,8 +22,10 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <Router />
+      <AppProvider>
+        <Toaster />
+        <Router />
+      </AppProvider>
     </QueryClientProvider>
   );
 }

@@ -122,7 +122,7 @@ export default function SuccessPage() {
              <div className="aspect-square bg-pink-100 rounded overflow-hidden relative">
                 {/* excited happy dog */}
                <img 
-                 src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?q=80&w=800&auto=format&fit=crop" 
+                 src="/images/pic1.jpeg" 
                  alt="Happy Celebration" 
                  className="w-full h-full object-cover"
                />
@@ -143,7 +143,7 @@ export default function SuccessPage() {
              <div className="aspect-square bg-pink-100 rounded overflow-hidden relative">
                {/* heart shape hands */}
                <img 
-                 src="https://images.unsplash.com/photo-1516575150278-77136aed6920?q=80&w=800&auto=format&fit=crop" 
+                 src="/images/pic2.jpeg" 
                  alt="Love Hands" 
                  className="w-full h-full object-cover"
                />

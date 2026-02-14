@@ -4,13 +4,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Cat } from "lucide-react";
 import confetti from "canvas-confetti";
 import { FloatingHeartsBackground } from "@/components/FloatingHeartsBackground";
+import { useAppContext } from "@/contexts/AppContext";
 
 export default function ProposalPage() {
   const [, setLocation] = useLocation();
+  const { name } = useAppContext(); // Get name from context
   const [noBtnPosition, setNoBtnPosition] = useState({ x: 0, y: 0 });
   const [isHoveringNo, setIsHoveringNo] = useState(false);
-  const [location] = useLocation();
-  const [name, setName] = useState("");
 
   // Runaway button logic
   const moveNoButton = () => {
@@ -64,16 +64,6 @@ export default function ProposalPage() {
 
     setLocation("/success");
   };
-
-  useEffect(() => {
-    // Parse query parameters from the URL
-    const searchParams = new URLSearchParams(window.location.search);
-    const nameParam = searchParams.get("willYouBeMyValentine?");
-
-    if (nameParam) {
-      setName(nameParam);
-    }
-  }, [location]);
 
 
   return (
