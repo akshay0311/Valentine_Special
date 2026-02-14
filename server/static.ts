@@ -26,8 +26,14 @@ export function serveStatic(app: Express) {
     }
   }));
 
-  // fall through to index.html if the file doesn't exist
-  app.get("*", (_req, res) => {
+  // fall through to index.html if the file doesn't exist (SPA fallback)
+  app.use((req, res, next) => {
+    // Skip API routes
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    
+    // Serve index.html for all other routes
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }
