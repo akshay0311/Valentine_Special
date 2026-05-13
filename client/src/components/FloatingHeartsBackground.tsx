@@ -44,13 +44,6 @@ export function FloatingHeartsBackground() {
             ease: "linear",
           }}
         >
-          <Heart 
-            fill="currentColor" 
-            style={{ 
-              width: `${heart.scale * 40}px`, 
-              height: `${heart.scale * 40}px` 
-            }} 
-          />
         </motion.div>
       ))}
     </div>
