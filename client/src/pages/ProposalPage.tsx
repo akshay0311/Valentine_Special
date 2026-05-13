@@ -139,19 +139,6 @@ export default function ProposalPage() {
               transform: 'translate(-50%, -50%)',
             }}
           >
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              animate={isHoveringNo ? {
-                rotate: [0, -5, 5, -5, 5, 0],
-                transition: { duration: 0.5, repeat: Infinity }
-              } : {}}
-              onMouseEnter={moveNoButton}
-              onTouchStart={(e) => { e.preventDefault(); moveNoButton(); }}
-              className="px-8 py-4 bg-gradient-to-r from-gray-300 to-gray-400 text-gray-700 text-xl font-bold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 whitespace-nowrap border-2 border-gray-400"
-            >
-              {isHoveringNo ? "🏃‍♂️ Catch me!" : "🤔 No"}
-            </motion.button>
           </motion.div>
         </div>
       </motion.div>
